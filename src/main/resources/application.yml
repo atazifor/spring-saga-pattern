@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: saga-pattern
+  cloud:
+    function:
+      definition: balanceUpdate;orderUpdate;inventoryUpdate;orderUpdateAccount
+    stream:
+      default:
+        content-type: application/json
+      bindings:
+        balanceUpdate-out-0:
+          destination: balance-update-queue
+        balanceUpdate-in-0:
+          destination: balance-update-queue
+          group: account-group
+        orderUpdate-out-0:
+          destination: order-update-queue
+        orderUpdate-in-0:
+          destination: order-update-queue
+          group: order-group
+        orderUpdateAccount-in-0:
+          destination: order-update-queue
+          group: order-account-group
+        inventoryUpdate-out-0:
+          destination: inventory-update-queue
+        inventoryUpdate-in-0:
+          destination: inventory-update-queue
+          group: inventory-group
+
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+logging:
+  level:
+    root: INFO
+    taz.amin: INFO
